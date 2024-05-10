@@ -44,7 +44,7 @@ function Registration() {
     };
 
     return (
-        <body className="body-registrering">
+        <div className="body-registrering">
 
             <div className="container-registrering">
 
@@ -79,7 +79,7 @@ function Registration() {
 
             </div>
 
-        </body>
+        </div>
     );
 }
 
