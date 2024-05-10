@@ -1,83 +1,154 @@
-/* Registration.css */
-.container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.right-section, .left-section {
-    flex: 1;
+body.body-registrering {
     margin: 10px;
-}
-
-.right-section {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.left-section {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-h1 {
-    color: #333;
-    font-size: 24px;
-}
-
-form {
+    padding: 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    height: 70vh;
+    background: linear-gradient(to right, blue, green);
 }
 
-label {
-    margin-bottom: 5px;
-    font-size: 16px;
-    color: #666;
+.container-registrering {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
 }
 
-input[type="text"] {
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+.section-registrering {
+    flex: 1;
+    padding: 20px;
+    box-shadow: 0px 0px 10px white;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-button {
-    background-color: #0056b3;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+.spillerListContainer-registrering {
+    border: 2px solid #ffffff;
+    border-radius: 20px;
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+    min-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 1.5em;
 }
 
-button:hover {
-    background-color: #004494;
-}
-
-ul {
-    list-style: none;
+.ul-registrering {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    color: #ffffff;
+    list-style-type: none;
     padding: 0;
+    margin: 0;
+    width: 100%;
 }
 
-li {
-    padding: 8px;
-    background-color: #eee;
-    border-radius: 4px;
-    margin-bottom: 5px;
+.li-registrering {
+    margin-bottom: 10px; /* Space between names */
+    text-align: center; /* Center names in the list */
+    padding: 10px 0; /* Adds padding for readability */
+    border-bottom: 1px solid #ccc; /* Adds a gray line between each name */
 }
 
-#startSpilKnap:disabled {
-    background-color: #ccc;
+.h1-registrering {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 20px 0;
+    font-size: 2em; /* Adjusted for responsiveness and uniformity */
+}
+
+#startSpilKnap-registrering {
+    background-color: rgb(236, 64, 64);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+#startSpilKnap-registrering.active {
+    background-color: #00ff00; /* Green when active */
+    color: black;
+}
+
+#startSpilKnap-registrering:hover {
+    transform: translateY(-2px); /* Slight lift effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+}
+
+.label-registrering {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #ffffff;
+    padding: 10px;
+    margin: 5px;
+}
+
+.input-registrering, button {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 100px;
+    border: 1px solid #ccc;
+    width: 300px;
+    text-align: center;
+}
+
+.button-registrering {
+    background-color: white;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.button-hover-registrering:hover {
+    background-color: lime;
+    transform: translateY(-5px);
+}
+
+/* Responsiveness for different screen sizes */
+@media (max-width: 1024px) {
+    .container-registrering {
+        flex-direction: column;
+    }
+
+    .section-registrering {
+        margin: 10px 0;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-registrering {
+        flex: none;
+        width: 100%;
+        box-shadow: none;
+    }
+
+    .ul-registrering, .playerContainer-registrering {
+        padding: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-registrering {
+        padding: 5px;
+    }
+
+    .h1-registrering {
+        font-size: 24px;
+    }
+
+    .input-registrering, .button-registrering {
+        font-size: 16px;
+        padding: 8px;
+    }
 }
