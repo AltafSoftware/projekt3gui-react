@@ -1,13 +1,39 @@
+/* CSS styles for the body element */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Arrange items in a column */
+  justify-content: center; /* Vertically center content */
+  align-items: center; /* Align items to the center horizontally and vertically */
+  height: 110vh; /* Set height to 110% of viewport height */
+  background: linear-gradient(to right, green, blue); /* Apply gradient background */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* CSS styles for the heading */
+h1 {
+  font-family: Arial, Helvetica, sans-serif; /* Font family */
+  font-weight: bold; /* Bold font weight */
+  font-size: 100px; /* Font size */
+  color: #ffffff; /* Text color */
+  margin: -200px 0 20px; /* Set margin-top to -200px, remove margin-bottom, and add margin at the bottom */
+}
+
+/* CSS styles for the button */
+button {
+  font-family: Arial, sans-serif; /* Font family */
+  font-size: 24px; /* Font size */
+  padding: 20px 40px; /* Padding inside the button */
+  background-color: #ffffff; /* Background color */
+  color: #000000; /* Text color */
+  border: none; /* No border */
+  border-radius: 5px; /* Border radius for rounded corners */
+  cursor: pointer; /* Cursor style */
+  transition: 0.3s ease; /* Transition effect */
+}
+
+/* CSS styles for the button on hover */
+button:hover {
+  background-color: limegreen; /* Background color on hover */
+  transform: translateY(-5px); /* Apply translateY transform to create a bounce effect */
 }
