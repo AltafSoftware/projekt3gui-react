@@ -49,11 +49,13 @@ function Registration() {
             <div className="container-registrering">
 
                 <div className="section-registrering left-section">
-                    <h1 className="h1-registrering">REGISTRERING</h1>
-                    <form onSubmit={e => e.preventDefault()}>
-                        <label className="label-registrering" htmlFor="Spillere">Indtast spillernavne:</label>
-                        <input type="text" className="input-registrering" id="Spillere" value={playerName} onChange={e => setPlayerName(e.target.value)} />
-                        <button type="button" className="button-registrering" onClick={addPlayer}>Tilføj til spillerliste</button>
+                    <form className="form-registrering" onSubmit={e => e.preventDefault()}>
+                        <h1 className="h1-registrering">REGISTRERING</h1>
+                        <div className="inputGroup">
+                            <label className="label-registrering" htmlFor="Spillere">Indtast spillernavne:</label>
+                            <input type="text" className="input-registrering" id="Spillere" value={playerName} onChange={e => setPlayerName(e.target.value)} />
+                        </div>
+                        <button type="button" className="button-registrering1" onClick={addPlayer}>Tilføj til spillerliste</button>
                     </form>
                 </div>
 
@@ -69,7 +71,7 @@ function Registration() {
                     </ul>
                     <button 
                         id="startSpilKnap-registrering" 
-                        className={`button-registrering ${selectedPlayers.length === 2 ? 'active' : ''}`}
+                        className={`button-registrering2 ${selectedPlayers.length === 2 ? 'active' : ''}`}
                         onClick={startGame}
                         disabled={selectedPlayers.length !== 2}
                         >

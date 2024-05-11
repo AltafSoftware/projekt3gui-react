@@ -16,14 +16,17 @@ body.body-registrering {
 
 .section-registrering {
     flex: 1;
-    padding: 20px;
-    box-shadow: 0px 0px 10px white;
+    width: 600px;
+    min-height: 200px;
+    padding: 20px; /* Ensure top padding is consistent */
+    box-shadow: 0px 0px 10px black;
     margin: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Aligns content from the start of the flex container */
 }
+
 
 .spillerListContainer-registrering {
     border: 2px solid #ffffff;
@@ -40,26 +43,38 @@ body.body-registrering {
 .ul-registrering {
     font-family: Arial, sans-serif;
     font-size: 20px;
+    min-height: 43px;
     color: #ffffff;
     list-style-type: none;
     padding: 0;
     margin: 0;
-    width: 100%;
+    margin-bottom: 20px;
+    width: 50%;
+    border: 2px solid white; /* Black border for the container */
+    border-radius: 10px; /* Rounded corners for the container */
 }
 
 .li-registrering {
     margin-bottom: 10px; /* Space between names */
-    text-align: center; /* Center names in the list */
+    text-align: left; /* Center names in the list */
+    margin-left: 10px;
+    margin-bottom: -1px;
     padding: 10px 0; /* Adds padding for readability */
     border-bottom: 1px solid #ccc; /* Adds a gray line between each name */
 }
 
 .h1-registrering {
     font-family: Arial, sans-serif;
+    font-size: 2.5em;
     font-weight: bold;
     color: #ffffff;
-    margin: 20px 0;
-    font-size: 2em; /* Adjusted for responsiveness and uniformity */
+    margin-top: 20px; /* Ensure sufficient space from the top of the container */
+    margin-bottom: 20px; /* Consistent space below the heading */
+}
+
+.h1-registrering, .button-registrering1 {
+    align-self: center; /* Centers the heading and button within their container */
+    width: auto; /* Removes any specific width constraints */
 }
 
 #startSpilKnap-registrering {
@@ -69,6 +84,7 @@ body.body-registrering {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s ease;
+    margin-top: 8px;
 }
 
 #startSpilKnap-registrering.active {
@@ -84,29 +100,60 @@ body.body-registrering {
 .label-registrering {
     font-family: Arial, sans-serif;
     font-size: 24px;
+    justify-content: center;
     color: #ffffff;
     padding: 10px;
     margin: 5px;
+    margin-bottom: 10px;
 }
 
-.input-registrering, button {
+.form-registrering {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* This centers all children horizontally */
+    width: 100%; /* Ensure the form takes the full width of its container */
+}
+
+.input-registrering, .button-registrering1, .button-registrering2 {
     font-family: Arial, sans-serif;
-    font-size: 24px;
+    font-size: 22px;
+    width: 300px; /* Fixed width for input and button */
     padding: 10px;
-    margin: 5px;
-    border-radius: 100px;
-    border: 1px solid #ccc;
-    width: 300px;
+    margin: 5px 0; /* Vertical spacing, no horizontal margins */
+    margin-top: 35px;
+    border-radius: 100px; /* Styling for rounded edges */
+    border: 1px solid whitesmoke; /* Subtle border */
     text-align: center;
 }
 
-.button-registrering {
+.input-group {
+    display: flex;
+    align-items: center; /* Aligns label and input line */
+    width: 100%; /* Ensures it spans the full width of its container */
+}
+
+.label-registrering {
+    margin-right: 10px; /* Provides spacing between label and input */
+    white-space: nowrap; /* Prevents the label from wrapping */
+}
+.button-registrering1 {
     background-color: white;
-    color: #000000;
-    border: none;
-    border-radius: 5px;
+    color: black;
+    border-radius: 10px;
     cursor: pointer;
     transition: 0.3s ease;
+    align-self: center; /* Center the button within the flex container */
+    margin-top: 60px;
+}
+
+.button-registrering2 {
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    align-self: center; /* Center the button within the flex container */
+    margin-top: 60px;
 }
 
 .button-hover-registrering:hover {
@@ -133,7 +180,7 @@ body.body-registrering {
         box-shadow: none;
     }
 
-    .ul-registrering, .playerContainer-registrering {
+    .ul-registrering {
         padding: 5px;
     }
 }
