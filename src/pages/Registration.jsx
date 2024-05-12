@@ -14,6 +14,7 @@ function Registration() {
     // State for managing the reference to the polling interval
     const [polling, setPolling] = useState(null);
 
+    // useEffect: sets up a timer that regularly updates game status to the server, and cleans the timer up when game is started.
     useEffect(() => {
         // Set up polling to send a game status of '0' to the server every 2 seconds
         const pollInterval = setInterval(() => {
@@ -31,11 +32,12 @@ function Registration() {
         setPolling(pollInterval); // Store the interval ID for later cleanup
 
         return () => {
-            // Clear the interval when the component unmounts to prevent memory leaks
+            // Clear the interval when the GamePage is loaded, to prevent memory leaks
             clearInterval(pollInterval);
         };
     }, []);
 
+    // startGame: Initiates the game if two players are selected, sends game start status to the server, and navigates to the game page.
     const startGame = () => {
         // Check if exactly two players are selected to start the game
         if (selectedPlayers.length === 2) {
