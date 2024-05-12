@@ -55,13 +55,14 @@ function Registration() {
             .then(response => response.json())
             .then(data => {
                 console.log(data.message); // Log the response from the server
-                navigate("/spilSide"); // Navigate to the game page
+                // navigate("/spilSide"); // Navigate to game page, IF server is active and rules are met.
             })
             .catch(error => console.error('Error sending status:', error));
         } else {
             // Alert the user if the condition of selecting exactly two players is not met
             alert('Please select exactly two players to start the game.');
         }
+        navigate("/spilSide"); // Navigate to game page without server being active.
     };
 
     const addPlayer = () => {
