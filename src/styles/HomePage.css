@@ -35,7 +35,7 @@ body.homepage-body {
     background-color: #ffffff; /* Background color */
     color: #000000; /* Text color */
     border: none; /* No border */
-    border-radius: 10px; /* Border radius for rounded corners */
+    border-radius: 5px; /* Border radius for rounded corners */
     cursor: pointer; /* Cursor style */
     transition: 0.3s ease; /* Transition effect */
 }
