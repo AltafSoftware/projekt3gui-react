@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Registration.css'; // Ensure this path is correct
+import '../styles/Registration.css'; // Import the CSS for the Registration component
 
 function Registration() {
+    // State for storing the list of players
     const [players, setPlayers] = useState([]);
+    // State for storing the currently entered player name in the input field
     const [playerName, setPlayerName] = useState('');
+    // State for tracking which players have been selected for the game
     const [selectedPlayers, setSelectedPlayers] = useState([]);
+    // Hook for navigation between components using React Router
     const navigate = useNavigate();
+    // State for managing the reference to the polling interval
     const [polling, setPolling] = useState(null);
 
     useEffect(() => {
-        // Start polling when the component mounts
+        // Set up polling to send a game status of '0' to the server every 2 seconds
         const pollInterval = setInterval(() => {
             fetch('http://localhost:3001/game-status', {
                 method: 'POST',
@@ -21,22 +26,23 @@ function Registration() {
             })
             .then(response => response.json())
             .catch(error => console.error('Error sending status:', error));
-        }, 2000); // Send a status of 0 every 2 seconds
+        }, 2000); // Interval time set to 2000 milliseconds (2 seconds)
 
-        setPolling(pollInterval);
+        setPolling(pollInterval); // Store the interval ID for later cleanup
 
         return () => {
-            // Clean up the interval on component unmount
+            // Clear the interval when the component unmounts to prevent memory leaks
             clearInterval(pollInterval);
         };
     }, []);
 
     const startGame = () => {
+        // Check if exactly two players are selected to start the game
         if (selectedPlayers.length === 2) {
-            // Clear the polling interval
+            // Clear the existing polling interval
             clearInterval(polling);
 
-            // Send a status of 1 to start the game
+            // Send a game status of '1' to the server to indicate the game is starting
             fetch('http://localhost:3001/game-status', {
                 method: 'POST',
                 headers: {
@@ -46,29 +52,35 @@ function Registration() {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data.message); // Log the server response
+                console.log(data.message); // Log the response from the server
                 navigate("/spilSide"); // Navigate to the game page
             })
             .catch(error => console.error('Error sending status:', error));
         } else {
+            // Alert the user if the condition of selecting exactly two players is not met
             alert('Please select exactly two players to start the game.');
         }
     };
 
     const addPlayer = () => {
+        // Check if the playerName is not empty and not already in the players list
         if (playerName && !players.includes(playerName)) {
-            setPlayers([...players, playerName]);
-            setPlayerName('');
+            setPlayers([...players, playerName]); // Add the new player to the players list
+            setPlayerName(''); // Clear the input field
         } else {
+            // Alert the user if the player name is not unique
             alert('Please enter a unique player name.');
         }
     };
 
     const handleCheckboxChange = (player) => {
+        // Find the index of the player in the selectedPlayers array
         const currentIndex = selectedPlayers.indexOf(player);
         if (currentIndex === -1) {
+            // If the player is not already selected, add them to the selectedPlayers list
             setSelectedPlayers([...selectedPlayers, player]);
         } else {
+            // If the player is already selected, remove them from the selectedPlayers list
             setSelectedPlayers(selectedPlayers.filter((p, i) => i !== currentIndex));
         }
     };
