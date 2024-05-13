@@ -22,32 +22,24 @@ function GamePage() {
     }, []);
 
     function startTimer() {
-        setTimerCount(5); // Start count from 5
+        let count = 5; // Start count from 5
+        setTimerCount(count); // Update the state initially to display the start count
         const interval = setInterval(() => {
-            setTimerCount(prevCount => {
-                if (prevCount > 1) 
-                {
-                    return prevCount - 1; // Decrement count by 1
-                } 
-                else if (prevCount === 1) 
-                {
-                    clearInterval(interval); // Stop the interval when count reaches 1
-                    setShowTimer(false);
-                    setShowDrinkNow(true);
-                    setTimeout(() => 
-                        {
-                        setShowDrinkNow(false);
-                        setShowResults(true);
-                        }, 2000); // "DRINK!" message shows for 2 seconds
-                    return prevCount - 1; // Decrement count to 0
-                } 
-                else 
-                {
-                    return prevCount; // If count is already 0 or negative, do not change it
-                }
-            });
+            if (count > 1) {
+                count -= 1; // Decrement the count
+                setTimerCount(count); // Update the state with the new count
+            } else {
+                clearInterval(interval); // Stop the interval when count reaches 1
+                setShowTimer(false);
+                setShowDrinkNow(true);
+                setTimeout(() => {
+                    setShowDrinkNow(false);
+                    setShowResults(true);
+                }, 2000); // "DRINK!" message shows for 2 seconds
+                setTimerCount(count - 1); // Optionally, update the count to 0
+            }
         }, 1000); // Update every second
-    }
+    }    
 
     return (
         <div className="game-body">
