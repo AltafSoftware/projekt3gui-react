@@ -60,7 +60,7 @@ function GamePage() {
                         </div>
                     </div>
                     <div className="results-box">
-                        <h2 className="results-heading">Resultat</h2>
+                        <h2 className="results-heading">RESULTAT</h2>
                         <p className="results-info">SPILLERNAVN, med tiden: TID-FUNKTION har vundet!</p>
                     </div>
                 </div>
