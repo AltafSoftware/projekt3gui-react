@@ -1,51 +1,103 @@
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const fetch = require('node-fetch');  // Include node-fetch for HTTP requests
+// Import required modules
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const http = require('http');
 
-// const app = express();
-// const PORT = process.env.PORT || 3001;
-// const CPP_BACKEND_URL = 'http://localhost:8080';  // URL of the C++ server
+// Create an instance of express application
+const app = express();
+const PORT = process.env.PORT || 3001; // Port for the frontend server
+const BACKEND_HOSTNAME = '192.168.59.128'; // IP address for the C++ backend
+const BACKEND_PORT = 8080; // Port for the C++ backend
 
-// app.use(bodyParser.json());
-// app.use(cors());
+// Middleware to parse incoming JSON requests
+app.use(bodyParser.json());
+// Middleware to enable Cross-Origin Resource Sharing (CORS)
+app.use(cors());
 
-// // Use a variable to keep track of the game status
-// let gameStatus = 0; // Default to 0 indicating 'not started'
+let gameStatus = 0; // Variable to keep track of game status
 
-// app.post('/game-status', (req, res) => {
-//     const { status } = req.body;
+// Function to send game status to the backend
+const sendGameStatus = (status) => {
+    const postData = JSON.stringify({ status }); // Convert status to JSON string
 
-//     // Update the game status based on the received status
-//     if (status === 0 || status === 1) {
-//         gameStatus = status;
-//         console.log(`${gameStatus} = ${gameStatus === 0 ? 'SPIL IKKE STARTET' : 'SPIL STARTET'}`);
+    const options = {
+        hostname: BACKEND_HOSTNAME,
+        port: BACKEND_PORT,
+        path: '/',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Set content type to JSON
+            'Content-Length': Buffer.byteLength(postData) // Set content length
+        }
+    };
 
-//         // Send the status to the C++ backend server
-//         fetch(CPP_BACKEND_URL, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ status })
-//         })
-//         .then(cppResponse => cppResponse.text())  // Assuming the C++ server might not return a JSON response
-//         .then(text => {
-//             console.log('Response from C++ server:', text);
-//             // Respond back to the original requester with the game status and the response from the C++ server
-//             res.status(200).json({ message: 'Status received successfully', currentStatus: gameStatus, cppResponse: text });
-//         })
-//         .catch(error => {
-//             console.error('Error communicating with C++ backend:', error);
-//             // Still respond back to the original requester with the game status
-//             res.status(500).json({ message: 'Failed to communicate with C++ backend', currentStatus: gameStatus });
-//         });
-//     } else {
-//         // Handle unexpected status values
-//         res.status(400).json({ message: 'Invalid status value received' });
-//     }
-// });
+    const request = http.request(options, (response) => {
+        response.setEncoding('utf8'); // Set response encoding to UTF-8
+        response.on('data', (chunk) => {
+            console.log(`Response from backend: ${chunk}`); // Log response from backend
+        });
+    });
 
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-// });
+    // Handle any errors in the request
+    request.on('error', (e) => {
+        console.error(`Problem with request: ${e.message}`);
+    });
+
+    request.write(postData); // Write the data to request body
+    request.end(); // End the request
+};
+
+// Function to check if the backend is running
+const checkBackendStatus = (callback) => {
+    const options = {
+        hostname: BACKEND_HOSTNAME,
+        port: BACKEND_PORT,
+        path: '/',
+        method: 'HEAD' // Use HEAD method to check backend status
+    };
+
+    const req = http.request(options, (res) => {
+        if (res.statusCode === 200) {
+            callback(true); // Backend is running
+        } else {
+            callback(false); // Backend is not running
+        }
+    });
+
+    req.on('error', () => {
+        callback(false); // Backend is not running
+    });
+
+    req.end(); // End the request
+};
+
+// Route to handle incoming game status updates
+app.post('/game-status', (req, res) => {
+    const { status } = req.body; // Extract status from request body
+
+    if (status === 0) {
+        gameStatus = status;
+        console.log(`${gameStatus} = SPIL IKKE STARTET!`); // Log game not started
+    } else if (status === 1) {
+        gameStatus = status;
+        console.log(`${gameStatus} = SPIL STARTET!`); // Log game started
+    }
+
+    // Check if the backend is running before sending the game status
+    checkBackendStatus((isRunning) => {
+        if (isRunning) {
+            sendGameStatus(gameStatus); // Send game status if backend is running
+        } else {
+            console.error('Backend not running'); // Log backend not running
+        }
+    });
+
+    // Respond back to the client with the current game status
+    res.status(200).json({ message: 'Status received successfully', currentStatus: gameStatus });
+});
+
+// Start the server and listen on the specified port
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

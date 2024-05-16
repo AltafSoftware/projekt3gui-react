@@ -38,30 +38,39 @@ private:
     }
 
     void handleOptionsRequest() {
-    // Respond to OPTIONS requests with appropriate CORS headers
-    std::string response = "HTTP/1.1 200 OK\r\n";
-    response += "Access-Control-Allow-Origin: *\r\n";
-    response += "Access-Control-Allow-Methods: GET, POST\r\n";
-    response += "Access-Control-Allow-Headers: Content-Type\r\n";
-    response += "Content-Length: 0\r\n\r\n";
+        std::string response = "HTTP/1.1 200 OK\r\n";
+        response += "Access-Control-Allow-Origin: *\r\n";
+        response += "Access-Control-Allow-Methods: GET, POST\r\n";
+        response += "Access-Control-Allow-Headers: Content-Type\r\n";
+        response += "Content-Length: 0\r\n\r\n";
 
-    sendResponse(response);
-}
+        sendResponse(response);
+    }
 
     void handleGETRequest() {
         std::cout << "GET request received" << std::endl;
-        // Respond to GET requests
         std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\nAccess-Control-Allow-Origin: *\r\n\r\nHello, World!";
         sendResponse(response);
     }
 
-    void handlePOSTRequest(const std::string& request) 
-    {
-        handleOptionsRequest();
+    void handlePOSTRequest(const std::string& request) {
         std::cout << "POST request received" << std::endl;
+
         size_t bodyStart = request.find("\r\n\r\n");
-        // Respond to POST requests
-         std::string response = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(request.size() - bodyStart - 4) + "\r\n\r\n" + request.substr(bodyStart + 4);
+        std::string body = request.substr(bodyStart + 4);
+
+        // Parse JSON body to extract the game status
+        size_t statusPos = body.find("\"status\":");
+        if (statusPos != std::string::npos) {
+            int status = body[statusPos + 9] - '0';
+            if (status == 0) {
+                std::cout << "SPIL IKKE STARTET!" << std::endl;
+            } else if (status == 1) {
+                std::cout << "SPIL STARTET!" << std::endl;
+            }
+        }
+
+        std::string response = "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n";
         sendResponse(response);
     }
 
@@ -109,4 +118,3 @@ private:
     tcp::acceptor acceptor_;
     tcp::socket socket_;
 };
-
