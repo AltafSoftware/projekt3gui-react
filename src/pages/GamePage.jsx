@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/GamePage.css'; // Ensure this path is correct
+import axios from 'axios'; // Import axios for making HTTP requests
 
 function GamePage() {
     const [showWelcome, setShowWelcome] = useState(true);
@@ -8,6 +9,9 @@ function GamePage() {
     const [timerCount, setTimerCount] = useState(5);
     const [showResults, setShowResults] = useState(false);
     const [showDrinkNow, setShowDrinkNow] = useState(false);
+    const [player1Time, setPlayer1Time] = useState('TID');
+    const [player2Time, setPlayer2Time] = useState('TID');
+    const [winnerTime, setWinnerTime] = useState('TID');
 
     useEffect(() => {
         setTimeout(() => {
@@ -39,7 +43,34 @@ function GamePage() {
                 setTimerCount(count - 1); // Optionally, update the count to 0
             }
         }, 1000); // Update every second
-    }    
+    }
+
+    async function getPlayer1Time() {
+        try {
+            const response = await axios.get('http://172.20.10.10:8080/get_time_player1');
+            setPlayer1Time(response.data.player1_time);
+        } catch (error) {
+            console.error('Error fetching player 1 time:', error);
+        }
+    }
+
+    async function getPlayer2Time() {
+        try {
+            const response = await axios.get('http://172.20.10.10:8080/get_time_player2');
+            setPlayer2Time(response.data.player2_time);
+        } catch (error) {
+            console.error('Error fetching player 2 time:', error);
+        }
+    }
+
+    async function getWinnerTime() {
+        try {
+            const response = await axios.get('http://172.20.10.10:8080/get_time_winner');
+            setWinnerTime(response.data.winner_time);
+        } catch (error) {
+            console.error('Error fetching winner time:', error);
+        }
+    }
 
     return (
         <div className="game-body">
@@ -52,16 +83,19 @@ function GamePage() {
                     <div className="timer-boxes">
                         <div className="timer-box">
                             <h2 className="timer-heading">Tid for spiller 1</h2>
-                            <p className="timer-info">Venter på tid...</p>
+                            <button className="tid-buttons" onClick={getPlayer1Time}>Hent tid</button>
+                            <p className="timer-info">{player1Time}</p>
                         </div>
                         <div className="timer-box">
                             <h2 className="timer-heading">Tid for spiller 2</h2>
-                            <p className="timer-info">Venter på tid...</p>
+                            <button className="tid-buttons" onClick={getPlayer2Time}>Hent tid</button>
+                            <p className="timer-info">{player2Time}</p>
                         </div>
                     </div>
                     <div className="results-box">
                         <h2 className="results-heading">RESULTAT</h2>
-                        <p className="results-info">SPILLERNAVN, med tiden: TID-FUNKTION har vundet!</p>
+                        <button className="tid-buttons" onClick={getWinnerTime}>Hent resultat</button>
+                        <p className="results-info">Spilleren med tiden: {winnerTime} har vundet!</p>
                     </div>
                 </div>
             )}
