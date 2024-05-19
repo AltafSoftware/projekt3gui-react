@@ -27,7 +27,7 @@ const sendGameStatus = async (status) => {
                 'Content-Type': 'application/json'
             }
         });
-        console.log(`Response from backend: ${response.data}`);
+        console.log(`Backend received data! ${response.data}`);
     } catch (error) {
         console.error(`Problem with request: ${error.message}`);
     }
