@@ -95,7 +95,7 @@ function GamePage() {
                     <div className="results-box">
                         <h2 className="results-heading">RESULTAT</h2>
                         <button className="tid-buttons" onClick={getWinnerTime}>Hent resultat</button>
-                        <p className="results-info">{winnerTime} sekunder</p>
+                        <p className="results-info">{winnerTime} sekunder.</p>
                     </div>
                 </div>
             )}
