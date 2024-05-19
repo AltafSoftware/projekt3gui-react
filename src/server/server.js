@@ -20,7 +20,6 @@ let gameStatus = 0; // Variable to keep track of game status
 // Function to send game status to the backend using axios
 const sendGameStatus = async (status) => {
     const postData = { status }; // Create post data
-
     try {
         const response = await axios.post(`http://${BACKEND_HOSTNAME}:${BACKEND_PORT}/`, postData, {
             headers: {
@@ -36,7 +35,6 @@ const sendGameStatus = async (status) => {
 // Function to handle incoming game status updates
 const handleGameStatusUpdate = async (req, res) => {
     const { status } = req.body; // Extract status from request body
-
     if (status === 0) {
         gameStatus = status;
         console.log(`${gameStatus} = SPIL IKKE STARTET!`); // Log game not started
