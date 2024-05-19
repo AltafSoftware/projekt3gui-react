@@ -33,8 +33,8 @@ const sendGameStatus = async (status) => {
     }
 };
 
-// Route to handle incoming game status updates
-app.post('/game-status', async (req, res) => {
+// Function to handle incoming game status updates
+const handleGameStatusUpdate = async (req, res) => {
     const { status } = req.body; // Extract status from request body
 
     if (status === 0) {
@@ -52,10 +52,10 @@ app.post('/game-status', async (req, res) => {
 
     // Respond back to the client with the current game status
     res.status(200).json({ message: 'Status received successfully', currentStatus: gameStatus });
-});
+};
 
-// New route to fetch player times from the backend
-app.get('/player-times', async (req, res) => {
+// Function to fetch player times from the backend
+const fetchPlayerTimesFromBackend = async (req, res) => {
     try {
         const response = await axios.get(`http://${BACKEND_HOSTNAME}:${BACKEND_PORT}/times`, {
             headers: {
@@ -67,9 +67,22 @@ app.get('/player-times', async (req, res) => {
         console.error(`Problem with request: ${error.message}`);
         res.status(500).json({ message: 'Error fetching player times' });
     }
-});
+};
 
-// Start the server and listen on the specified port
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Route to handle incoming game status updates
+const gameStatusRoute = '/game-status';
+app.post(gameStatusRoute, handleGameStatusUpdate);
+
+// Route to fetch player times from the backend
+const playerTimesRoute = '/player-times';
+app.get(playerTimesRoute, fetchPlayerTimesFromBackend);
+
+// Function to start the server and listen on the specified port
+const startServer = () => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+};
+
+// Start the server
+startServer();
