@@ -47,7 +47,7 @@ function GamePage() {
 
     async function getPlayer1Time() {
         try {
-            const response = await axios.get('http://172.20.10.10:8080/get_time_player1');
+            const response = await axios.get('http://172.20.10.8:8080/get_time_player1');
             setPlayer1Time(response.data.player_1_time);  // Fixed data key
         } catch (error) {
             console.error('Error fetching player 1 time:', error);
@@ -56,7 +56,7 @@ function GamePage() {
 
     async function getPlayer2Time() {
         try {
-            const response = await axios.get('http://172.20.10.10:8080/get_time_player2');
+            const response = await axios.get('http://172.20.10.8:8080/get_time_player2');
             setPlayer2Time(response.data.player_2_time);  // Fixed data key
         } catch (error) {
             console.error('Error fetching player 2 time:', error);
@@ -65,7 +65,7 @@ function GamePage() {
 
     async function getWinnerTime() {
         try {
-            const response = await axios.get('http://172.20.10.10:8080/get_time_winner');
+            const response = await axios.get('http://172.20.10.8:8080/get_time_winner');
             setWinnerTime(response.data.winner);  // Fixed data key
         } catch (error) {
             console.error('Error fetching winner time:', error);

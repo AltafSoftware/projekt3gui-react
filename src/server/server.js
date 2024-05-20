@@ -7,7 +7,7 @@ const axios = require('axios'); // Ensure axios is imported
 // Create an instance of express application
 const app = express();
 const PORT = process.env.PORT || 3001; // Port for the frontend server
-const BACKEND_HOSTNAME = '172.20.10.10'; // IP address for the C++ backend
+const BACKEND_HOSTNAME = '172.20.10.8'; // IP address for the C++ backend
 const BACKEND_PORT = 8080; // Port for the C++ backend
 
 // Middleware to parse incoming JSON requests
