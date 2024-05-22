@@ -44,13 +44,11 @@ void Session::handleGETRequest(const std::string &request) {
     size_t pathEnd = request.find(" ", pathStart);
     std::string path = request.substr(pathStart, pathEnd - pathStart);
 
-    static double player_1_time, player_2_time;
-
     if (path == "/get_time_player1") {
         double time;
         {
             std::lock_guard<std::mutex> lock(game_mutex);
-            time = player_1_time.load();
+            time = player_1_time;
         }
 
         Json::Value root;
@@ -69,7 +67,7 @@ void Session::handleGETRequest(const std::string &request) {
         double time;
         {
             std::lock_guard<std::mutex> lock(game_mutex);
-            time = player_2_time.load();
+            time = player_2_time;
         }
 
         Json::Value root;
@@ -88,8 +86,8 @@ void Session::handleGETRequest(const std::string &request) {
         double p1_time, p2_time;
         {
             std::lock_guard<std::mutex> lock(game_mutex);
-            p1_time = player_1_time.load();
-            p2_time = player_2_time.load();
+            p1_time = player_1_time;
+            p2_time = player_2_time;
         }
 
         std::ostringstream winnerStream;
