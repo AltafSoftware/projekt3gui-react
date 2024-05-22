@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -std=c++11 -pthread
 INCLUDES = -Iinclude
 
 # Libraries
-LIBS = -lboost_system -ljsoncpp
+LIBS = -lboost_system -ljsoncpp -latomic
 
 # Source files
 SRCS = src/main.cpp src/server.cpp src/hardware.cpp
