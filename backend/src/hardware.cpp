@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
+#include <cstddef>  // Add this line to include size_t
 
 // External shared variables
 std::atomic<double> player_1_time(0.0);
@@ -41,9 +42,9 @@ bool setI2CSlaveAddress(int file, int addr) {
     return true;
 }
 
-bool writeData(int file, const unsigned char* data, size_t length) {
+bool writeData(int file, const unsigned char* data, std::size_t length) {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    if (write(file, data, length) != length) {
+    if (write(file, data, length) != static_cast<ssize_t>(length)) {
         perror("Failed to write to the I2C bus");
         return false;
     }
@@ -84,7 +85,7 @@ void readI2CData(int file) {
             }
         } else {
             std::cout << "Anden vaerdi end 1 2 3 4: " << std::endl << "Vaerdien er: " << std::endl;
-            for (auto i = 0; i < sizeof(receivedData); ++i) {
+            for (std::size_t i = 0; i < sizeof(receivedData); ++i) {
                 std::cout << (unsigned int)receivedData[i] << std::endl;
                 usleep(100000);
             }
