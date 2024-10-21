@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/GamePage.css';
 import axios from 'axios';
 
-function GamePage() { // Define the GamePage component
+function GamePage() { 
     // State variables to control different UI elements and game states
     const [showWelcome, setShowWelcome] = useState(true); 
     const [showReady, setShowReady] = useState(false);
@@ -15,20 +15,18 @@ function GamePage() { // Define the GamePage component
     const [winnerTime, setWinnerTime] = useState('TID');
 
     useEffect(() => {  // useEffect hook to run the welcome and ready states on component load
-        setTimeout(() => {  // After 2 seconds, hide the welcome message and show the "Ready" message
+        setTimeout(() => {  
             setShowWelcome(false);
             setShowReady(true);
-            setTimeout(() => {  // After another 2 seconds, hide the "Ready" message and show the timer
+            setTimeout(() => {  
                 setShowReady(false);
                 setShowTimer(true);
-                startTimer();  // Start the countdown timer
+                startTimer();  
             }, 2000);
         }, 2000);
     }, []);  // Empty dependency array = effect runs only once when the component mounts
 
-    /**
-     * Function to start the countdown timer
-     */
+    // Function to start the countdown timer
     function startTimer() {
         let count = 5;  // Initialize the countdown value
         setTimerCount(count);  // Set the countdown value in state
@@ -48,13 +46,13 @@ function GamePage() { // Define the GamePage component
             }
         }, 1000);  // Interval runs every 1000 milliseconds (1 second)
     }
-    // TODO: FIX COMMENTS
+
     async function getPlayer1Time() {
         try {
-            // GET REQUEST to the server to fetch the player 1 time
+            // GET REQUEST to the server-endpoint to fetch the player 1 time
             const response = await axios.get('http://172.20.10.10:8080/get_time_player1');
             // Update player 1's time state with the fetched data
-            setPlayer1Time(response.data.player_1_time);  // Fixed data key
+            setPlayer1Time(response.data.player_1_time); 
         } catch (error) {
             console.error('Error fetching player 1 time:', error);
         }
@@ -62,8 +60,10 @@ function GamePage() { // Define the GamePage component
 
     async function getPlayer2Time() {
         try {
+            // GET REQUEST to the server-endpoint to fetch the player 2 time
             const response = await axios.get('http://172.20.10.10:8080/get_time_player2');
-            setPlayer2Time(response.data.player_2_time);  // Fixed data key
+            // Update player 2's time state with the fetched data
+            setPlayer2Time(response.data.player_2_time);  
         } catch (error) {
             console.error('Error fetching player 2 time:', error);
         }
@@ -71,8 +71,10 @@ function GamePage() { // Define the GamePage component
 
     async function getWinnerTime() {
         try {
+            // GET REQUEST to the server-endpoint to fetch the winner-time
             const response = await axios.get('http://172.20.10.10:8080/get_time_winner');
-            setWinnerTime(response.data.winner);  // Fixed data key
+            // Update the winner-time state with the fetched data
+            setWinnerTime(response.data.winner); 
         } catch (error) {
             console.error('Error fetching winner time:', error);
         }

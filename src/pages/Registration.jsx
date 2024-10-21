@@ -1,99 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Registration.css'; // Import the CSS for the Registration component
+import '../styles/Registration.css';
 
 function Registration() {
-    // State for storing the list of players
     const [players, setPlayers] = useState([]);
-    // State for storing the currently entered player name in the input field
     const [playerName, setPlayerName] = useState('');
-    // State for tracking which players have been selected for the game
     const [selectedPlayers, setSelectedPlayers] = useState([]);
-    // Hook for navigation between components using React Router
     const navigate = useNavigate();
-    // State for managing the reference to the polling interval
     const [polling, setPolling] = useState(null);
 
-    // useEffect: sets up a timer that regularly updates game status to the server, and cleans the timer up when game is started.
     useEffect(() => {
-        // Defines a useEffect hook that sets up a side effect in the component.
-    
-        // Set up polling to send a game status of '0' to the server every 2 seconds
         const pollInterval = setInterval(() => {
-            // Creates a repeating interval that executes the enclosed function every 2000 milliseconds (2 seconds).
-    
+            // Send a POST request to server.js every 2 seconds to update the game status as 'not started'
             fetch('http://localhost:3001/game-status', {
-                method: 'POST',               // Specifies the HTTP method POST to send data to the server.
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'  // Sets the content type of the request to JSON, telling the server to expect JSON data.
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: 0 })  // Converts the object { status: 0 } into a JSON string and sets it as the request body.
+                body: JSON.stringify({ status: 0 })  // Game not started
             })
-            .then(response => response.json())  // Waits for the response from the server and converts it from JSON to a JavaScript object.
-            .catch(error => console.error('Error sending status:', error));  // Catches and logs any errors that occur during the fetch operation.
-        }, 2000); // Interval time set to 2000 milliseconds (2 seconds)
-    
-        setPolling(pollInterval); // Stores the interval ID returned by setInterval in the polling state variable for later reference.
-    
-        return () => {
-            // Defines a cleanup function that will be called when the component is unmounted from the React DOM.
-    
-            // Clear the interval when the GamePage is loaded, to prevent memory leaks
-            clearInterval(pollInterval);  // Clears the interval associated with the pollInterval ID, stopping the repeated execution.
-        };
-    }, []); // The empty dependency array indicates this effect runs only once after the initial render, mimicking componentDidMount behavior.
-    
+            .then(response => response.json())
+            .catch(error => console.error('Error sending status:', error));
+        }, 2000);
 
-    // startGame: Initiates the game if two players are selected, sends game start status to the server, and navigates to the game page.
+        setPolling(pollInterval);  // Save interval ID so it can be cleared later
+
+        return () => {
+            clearInterval(pollInterval);  // Clean up: stop polling when component unmounts
+        };
+    }, []);  // Empty dependency array means this effect runs only once when the component mounts
+
     const startGame = () => {
-        // Check if exactly two players are selected to start the game
         if (selectedPlayers.length === 2) {
-            // Clear the existing polling interval to stop repeated requests
-            clearInterval(polling);
-    
-            // Send a game status of '1' to the server to indicate the game is starting
+            clearInterval(polling);  // Stop polling when the game starts
+
+            // Send a POST request to server.js with game status as 'started'
             fetch('http://localhost:3001/game-status', {
-                method: 'POST',                          // Specifies the HTTP method POST for sending data
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'   // Sets the content type of the request to JSON
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: 1 })      // Converts the object { status: 1 } into a JSON string for the request body
+                body: JSON.stringify({ status: 1 })  // Game started
             })
-            .then(response => response.json())          // Parses the JSON response from the server
+            .then(response => response.json())
             .then(data => {
-                console.log(data.message);              // Logs the message received from the server
-                // navigate("/spilSide");               // Navigate to the game page, commented out for clarity
+                console.log(data.message);  
             })
-            .catch(error => console.error('Error sending status:', error));  // Logs any errors encountered during the fetch
+            .catch(error => console.error('Error sending status:', error));
         } else {
-            // Alert the user if the condition of selecting exactly two players is not met
             alert('Please select exactly two players to start the game.');
         }
-        navigate("/spilSide");  // Navigate to the game page regardless of the server response or if the server is active
+        navigate("/spilSide");  // Navigate to the game page after starting the game
     };
-    
+
     const addPlayer = () => {
-        // Check if the playerName input is not empty and the name is not already in the players list
         if (playerName && !players.includes(playerName)) {
-            setPlayers([...players, playerName]);       // Adds the new player to the players list
-            setPlayerName('');                          // Clears the playerName input field
+            setPlayers([...players, playerName]);  // Add player to the list
+            setPlayerName('');  // Clear the input field
         } else {
-            // Alert the user if the player name input is empty or the name is already taken
             alert('Please enter a unique player name.');
         }
     };
-    
+
     const handleCheckboxChange = (player) => {
-        // Find the index of the player in the selectedPlayers array
         const currentIndex = selectedPlayers.indexOf(player);
         if (currentIndex === -1) {
-            // If the player is not already selected, add them to the selectedPlayers list
-            setSelectedPlayers([...selectedPlayers, player]);
+            setSelectedPlayers([...selectedPlayers, player]);  // Add player to selected list
         } else {
-            // If the player is already selected, remove them from the selectedPlayers list
+            // Remove player from selected list
             setSelectedPlayers(selectedPlayers.filter((p, i) => i !== currentIndex));
         }
-    };    
+    };
 
     return (
         <div className="body-registrering">
